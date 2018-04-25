@@ -9,7 +9,6 @@
 #import "ProductListViewController.h"
 #import "ProductService.h"
 #import "ProductTableViewCell.h"
-#import "CartViewController.h"
 
 @interface ProductListViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITableView *tableView;
@@ -29,17 +28,7 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     [self.view addSubview:self.tableView];
-
-    UIButton *cartButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [cartButton addTarget:self action:@selector(cartButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [cartButton setTitle:@"Cart" forState:UIControlStateNormal];
-    [cartButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    [cartButton setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
-    [cartButton sizeToFit];
     
-    UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc] initWithCustomView:cartButton];
-    self.navigationItem.rightBarButtonItem = rightBarButton;
-
     [self.productService loadProducts:^(NSArray<Product *> *items, NSError *error, BOOL hasChanged) {
         if (hasChanged) {
             _products = items;
@@ -73,11 +62,6 @@
     [cell configureWithProduct:[self.products objectAtIndex:[indexPath row]]];
     
     return cell;
-}
-
-#pragma mark - Button Tap
-- (void)cartButtonTapped:(UIButton *)button {
-    
 }
 
 - (void)didReceiveMemoryWarning {
